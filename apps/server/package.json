@@ -1,0 +1,40 @@
+{
+  "name": "@mail-ai/server",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "dev": "pnpm --filter @mail-ai/shared build && pnpm --filter @mail-ai/classifier build && tsx watch src/index.ts",
+    "start": "node dist/index.js",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "tsx src/db/migrate.ts"
+  },
+  "dependencies": {
+    "@fastify/cors": "^10.0.2",
+    "@mail-ai/classifier": "workspace:*",
+    "@mail-ai/shared": "workspace:*",
+    "better-sqlite3": "^11.8.1",
+    "dotenv": "^16.4.7",
+    "drizzle-orm": "^0.39.3",
+    "fastify": "^5.2.1",
+    "html-to-text": "^9.0.5",
+    "imapflow": "^1.0.181",
+    "mailparser": "^3.7.2",
+    "pino": "^9.6.0",
+    "sanitize-html": "^2.17.6",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.12",
+    "@types/html-to-text": "^9.0.4",
+    "@types/mailparser": "^3.4.5",
+    "@types/sanitize-html": "^2.16.1",
+    "drizzle-kit": "^0.30.4",
+    "tsx": "^4.19.3",
+    "typescript": "^5.7.3",
+    "vitest": "^2.1.9"
+  }
+}

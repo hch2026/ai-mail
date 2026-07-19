@@ -1,0 +1,1 @@
+ALTER TABLE `mailboxes` ADD `last_flag_refresh_at` integer;

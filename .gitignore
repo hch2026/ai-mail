@@ -1,0 +1,12 @@
+node_modules/
+dist/
+coverage/
+.env
+*.local
+data/
+*.db
+*.db-shm
+*.db-wal
+*.tsbuildinfo
+.DS_Store
+apps/web/public/config.js
