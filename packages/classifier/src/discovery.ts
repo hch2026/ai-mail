@@ -46,6 +46,7 @@ const purposes: readonly PurposeDefinition[] = [
     keywords: [
       "验证码", "验证代码", "登录提醒", "新设备", "异地登录", "密码修改", "密码已被更改", "安全提醒",
       "帐号安全", "账号安全", "验证您的邮箱", "激活你的", "verification code", "security alert", "sign-in",
+      "verify your device", "review this sign in", "unrecognized device", "unrecognized location",
       "password has been changed", "instagram code", "apple id 信息已更", "账户初始化密码", "初始化密码",
     ],
     action: true,
@@ -61,12 +62,24 @@ const purposes: readonly PurposeDefinition[] = [
   },
   {
     key: "orders",
-    label: "订单与数字权益",
-    description: "订单确认、购买成功、兑换码、许可证和会员权益",
+    label: "购物订单、退款与售后",
+    description: "商品订单确认、发货物流、退款、退货和售后处理",
     keywords: [
-      "订单确认", "购买成功", "兑换码", "激活码", "许可证", "会员权益", "订阅确认", "订阅续期",
-      "订阅即将到期", "退款申请", "充值卡", "预购", "order confirmation", "license", "purchase", "redeem", "refund",
+      "订单确认", "购买成功", "已付款", "已发货", "发货通知", "物流", "配送", "签收", "退款申请",
+      "退款成功", "退款通知", "退货", "售后", "淘宝", "天猫", "京东", "amazon order", "order confirmation",
+      "order shipped", "delivery", "tracking", "purchase", "refund",
     ],
+  },
+  {
+    key: "travel",
+    label: "出行票务与交通",
+    description: "火车、飞机等行程的购票、出票、改签、退票和出行提醒",
+    keywords: [
+      "12306", "rails.com.cn", "车票", "火车票", "购票", "出票", "退票", "改签", "候补购票",
+      "列车", "车次", "乘车", "航班", "机票", "登机", "行程单", "flight", "boarding",
+    ],
+    domainHints: ["rails.com.cn", "12306.cn"],
+    action: true,
   },
   {
     key: "recruiting",

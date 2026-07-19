@@ -31,6 +31,18 @@ describe("taxonomy discovery", () => {
     expect(match.definition.key).toBe("security");
   });
 
+  it("routes GitHub device verification to account security", () => {
+    const match = inferPurpose(email(1, "[GitHub] Please verify your device", "github.com"));
+    expect(match.definition.key).toBe("security");
+  });
+
+  it("keeps 12306 purchase and refund messages in travel", () => {
+    const purchase = inferPurpose(email(1, "网上购票系统-用户支付通知", "rails.com.cn"));
+    const refund = inferPurpose(email(2, "网上购票系统-退票成功通知", "rails.com.cn"));
+    expect(purchase.definition.key).toBe("travel");
+    expect(refund.definition.key).toBe("travel");
+  });
+
   it("builds an 8-18 label taxonomy from observed senders and purposes", () => {
     const messages = [
       email(1, "Security alert: new device", "auth.example"),

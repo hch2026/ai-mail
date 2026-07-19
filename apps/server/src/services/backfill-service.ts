@@ -44,7 +44,10 @@ export class BackfillService {
           const ids = this.discoveryRepository.getBackfillEmailIds(versionId, 100);
           if (ids.length === 0) break;
           for (const emailId of ids) {
-            await this.classificationService.classifyEmail(emailId, mailbox, taxonomy);
+            // The selected set contains only messages missing this taxonomy
+            // version. Force allows a failed message to be retried instead of
+            // being selected forever while claimClassification rejects it.
+            await this.classificationService.classifyEmail(emailId, mailbox, taxonomy, { force: true });
           }
         }
       });

@@ -31,6 +31,28 @@ describe("RuleClassifier", () => {
     });
   });
 
+  it("normalizes oversized sender domains before Zod validation", async () => {
+    const longDomain = `${"subdomain.".repeat(8)}example.com`;
+    const result = await new RuleClassifier().classify({
+      ...base,
+      fromAddress: `notice@${longDomain}`,
+      subject: "Hello",
+    });
+    expect(result.classification.sourceLabels[0]?.length).toBeLessThanOrEqual(50);
+  });
+
+  it("prefers Other over Personal for an unknown message", async () => {
+    const labels = [
+      { label: "个人往来", description: "朋友和个人联系人的直接沟通", estimatedCount: 0, exampleSenders: [], exampleSubjects: [] },
+      { label: "其他", description: "无法可靠归入其他类别的邮件", estimatedCount: 0, exampleSenders: [], exampleSubjects: [] },
+    ];
+    const result = await new RuleClassifier().classify({ ...base, subject: "Unrecognized message" }, labels);
+    expect(result.classification).toMatchObject({
+      primaryLabel: "其他",
+      suggestedAction: "review",
+    });
+  });
+
   it("uses the discovered taxonomy instead of the legacy preset labels", async () => {
     const labels = [
       ["账号安全与验证", "验证码、新设备登录、密码修改和风险提醒"],

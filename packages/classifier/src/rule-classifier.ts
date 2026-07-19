@@ -49,7 +49,9 @@ const rules: readonly Rule[] = [
 ];
 
 function sourceLabels(input: ClassificationInput): string[] {
-  const domain = input.fromAddress?.split("@")[1]?.toLowerCase();
+  const domain = input.fromAddress?.split("@").at(-1)?.trim().toLowerCase()
+    .replace(/[^a-z0-9._-]/g, "")
+    .slice(0, 50);
   return domain ? [domain] : [];
 }
 
@@ -151,6 +153,10 @@ function selectDiscoveredTaxonomyLabel(
   purposeDescription: string,
   taxonomy: readonly TaxonomyLabel[],
 ): { label: string; matched: boolean } {
+  if (purposeKey === "unknown") {
+    const fallback = fallbackTaxonomyLabel(taxonomy);
+    return { label: fallback.label, matched: /其他|个人/.test(fallback.label) };
+  }
   const exact = taxonomy.find((item) => item.label === purposeLabel || item.description === purposeDescription);
   if (exact) return { label: exact.label, matched: true };
 
@@ -162,7 +168,7 @@ function selectDiscoveredTaxonomyLabel(
   }).sort((a, b) => b.score - a.score);
   if ((scored[0]?.score ?? 0) > 0) return { label: scored[0]!.label, matched: true };
 
-  const fallback = taxonomy.find((item) => /其他|个人|复核|观察/.test(item.label)) ?? taxonomy[0]!;
+  const fallback = fallbackTaxonomyLabel(taxonomy);
   return { label: fallback.label, matched: purposeKey === "unknown" && /其他|个人/.test(fallback.label) };
 }
 
@@ -179,6 +185,13 @@ function selectTaxonomyLabel(
     return { label: item.label, score };
   }).sort((a, b) => b.score - a.score);
   if ((scored[0]?.score ?? 0) > 0) return { label: scored[0]!.label, matched: true };
-  const fallback = taxonomy.find((item) => /其他|个人|复核|观察/.test(item.label)) ?? taxonomy[0]!;
+  const fallback = fallbackTaxonomyLabel(taxonomy);
   return { label: fallback.label, matched: false };
+}
+
+function fallbackTaxonomyLabel(taxonomy: readonly TaxonomyLabel[]): TaxonomyLabel {
+  return taxonomy.find((item) => item.label.trim() === "其他")
+    ?? taxonomy.find((item) => /其他|复核|观察/.test(item.label))
+    ?? taxonomy.find((item) => /个人/.test(item.label))
+    ?? taxonomy[0]!;
 }
