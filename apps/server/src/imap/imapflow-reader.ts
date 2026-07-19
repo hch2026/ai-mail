@@ -136,7 +136,7 @@ export class ImapFlowConnection implements ImapConnection {
       secure: config.MAIL_IMAP_SECURE,
       auth: { user: config.MAIL_EMAIL, pass: config.MAIL_AUTH_CODE },
       logger: false,
-      clientInfo: { name: "ai163mail", version: "0.1.0", vendor: "local" },
+      clientInfo: { name: "ai-mail", version: "0.1.0", vendor: "local" },
       maxIdleTime: 4 * 60 * 1000,
       connectionTimeout: 30_000,
       greetingTimeout: 20_000,
@@ -165,7 +165,7 @@ export class ImapFlowConnection implements ImapConnection {
   ): Promise<T> {
     const lock = await this.client.getMailboxLock(this.config.MAIL_MAILBOX, {
       readOnly: true,
-      description: "ai163mail read-only sync",
+      description: "ai-mail read-only sync",
     });
     try {
       return await callback(new ImapFlowMailboxSession(this.client, this.config.MAIL_MAILBOX));
@@ -227,7 +227,7 @@ export async function moveMessagesToTrash(
 
   const lock = await client.getMailboxLock(input.mailbox, {
     readOnly: false,
-    description: "ai163mail user-confirmed move to trash",
+    description: "ai-mail user-confirmed move to trash",
   });
   try {
     if (!client.mailbox || client.mailbox.readOnly) {

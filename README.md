@@ -66,7 +66,7 @@ AI_MODEL=支持 JSON Schema 输出的模型名
 
 不填写时使用本地规则分类器。无论选择哪种分类器，都要先确认分类体系才会开始分类。
 
-常用完整配置见 [.env.example](/Users/hch/Documents/ai163mail/.env.example)。163 默认连接参数为：
+常用完整配置见 [.env.example](/Users/hch/Documents/ai-mail/.env.example)。163 默认连接参数为：
 
 ```dotenv
 MAIL_IMAP_HOST=imap.163.com
